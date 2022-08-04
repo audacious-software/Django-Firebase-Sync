@@ -3,6 +3,7 @@
 import time
 import logging
 import tempfile
+import traceback
 
 import fasteners
 
@@ -69,7 +70,6 @@ def handle_lock(handle):
         try:
             handle(self, *args, **options)
         except: # pylint: disable=bare-except
-            import traceback
             logging.error("Command Failed")
             logging.error('==' * 72)
             logging.error(traceback.format_exc())
