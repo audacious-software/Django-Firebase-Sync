@@ -1,4 +1,4 @@
-# pylint: disable=pointless-string-statement
+# pylint: disable=pointless-string-statement, line-too-long
 
 import time
 import logging
@@ -60,7 +60,7 @@ def handle_lock(handle):
         logging.debug("%s - acquiring lock...", lock_name)
 
         locked = lock.acquire(timeout=LOCK_WAIT_TIMEOUT)
-        
+
         if locked is False:
             logging.debug("waiting for the lock timed out. quitting.")
             return
