@@ -4,7 +4,7 @@ import time
 import logging
 import tempfile
 
-from lockfile import FileLock, AlreadyLocked, LockTimeout
+import fasteners
 
 from django.conf import settings
 from django.utils.text import slugify
@@ -54,16 +54,13 @@ def handle_lock(handle):
         logging.debug("-" * 72)
 
         lock_name = self.__module__.split('.').pop()
-        lock = FileLock('%s/%s__%s' % (tempfile.gettempdir(), lock_prefix, lock_name))
+        lock = fasteners.InterProcessLock('%s/%s__%s' % (tempfile.gettempdir(), lock_prefix, lock_name))
 
         logging.debug("%s - acquiring lock...", lock_name)
 
-        try:
-            lock.acquire(LOCK_WAIT_TIMEOUT)
-        except AlreadyLocked:
-            logging.debug("lock already in place. quitting.")
-            return
-        except LockTimeout:
+        locked = lock.acquire(timeout=LOCK_WAIT_TIMEOUT)
+        
+        if locked is False:
             logging.debug("waiting for the lock timed out. quitting.")
             return
 
