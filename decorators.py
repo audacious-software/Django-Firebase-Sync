@@ -59,7 +59,12 @@ def handle_lock(handle):
 
         logging.debug("%s - acquiring lock...", lock_name)
 
-        locked = lock.acquire(timeout=LOCK_WAIT_TIMEOUT)
+        locked = False
+
+        if LOCK_WAIT_TIMEOUT > 0:
+            locked = lock.acquire(timeout=LOCK_WAIT_TIMEOUT)
+        else:
+            locked = lock.acquire()
 
         if locked is False:
             logging.debug("waiting for the lock timed out. quitting.")
