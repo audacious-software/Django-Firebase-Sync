@@ -32,7 +32,7 @@ jobs:
             pip install --upgrade pip
             pip install wheel
             . /home/circleci/venv/bin/activate
-            pip install -r requirements.txt --progress-bar off
+            pip install -r requirements.txt
             cd ..
             mv project firebase_sync
             mkdir django
@@ -79,7 +79,7 @@ jobs:
             pip install --upgrade pip
             pip install wheel
             . /home/circleci/venv/bin/activate
-            pip install -r requirements.txt --progress-bar off
+            pip install -v -r requirements.txt
             cd ..
             mv project firebase_sync
             mkdir django
